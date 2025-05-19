@@ -1,15 +1,15 @@
 body {
   font-family: Arial, sans-serif;
-  background: gold;
+  background: white;
   padding: 20px;
   margin: 0;
-  background-color: #0f0d0a;
+  background-color: #523305d5;
 }
 
 .container {
   max-width: 500px;
   margin: auto;
-  background: #deb887;
+  background: #d3b085;
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);

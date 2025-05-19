@@ -1,0 +1,100 @@
+body {
+  font-family: Arial, sans-serif;
+  background: gold;
+  padding: 20px;
+  margin: 0;
+  background-color: #0f0d0a;
+}
+
+.container {
+  max-width: 500px;
+  margin: auto;
+  background: #deb887;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input, select, button {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 200px;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  background-color: burlywood;
+
+}
+
+.consumed {
+  background-color: #e0ffe0;
+  border: 1px solid #a5d6a7;
+}
+
+.burned {
+  background-color: #ffe0e0;
+  border: 1px solid #ef9a9a;
+}
+
+.card span {
+  font-weight: bold;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+#total {
+  font-size: 20px;
+  color: #444;
+  text-align: right;
+  margin-top: 15px;
+}

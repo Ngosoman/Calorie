@@ -78,3 +78,25 @@ function getCookiesData() {
 
 // Initial load
 renderItems();
+
+ async function getCalories() {
+      
+     
+      const appId = 'c4fc58b4';
+      const appKey = '77ececef4e56943c8ca7478ae5f47219';
+
+      const url = `https://api.edamam.com/api/nutrition-data?app_id=${appId}&app_key=${appKey}&ingr=${encodeURIComponent(food)}`;
+
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('API request failed');
+        
+        const data = await response.json();
+
+        const calories = data.calories;
+        document.getElementById('calorieResult').innerText = `Calories: ${calories}`;
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('calorieResult').innerText = 'Failed to fetch calorie information.';
+      }
+    }

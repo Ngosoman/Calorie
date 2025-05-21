@@ -79,24 +79,83 @@ function getCookiesData() {
 // Initial load
 renderItems();
 
- async function getCalories() {
-      
-     
-      const appId = 'c4fc58b4';
-      const appKey = '77ececef4e56943c8ca7478ae5f47219';
 
-      const url = `https://api.edamam.com/api/nutrition-data?app_id=${appId}&app_key=${appKey}&ingr=${encodeURIComponent(food)}`;
 
-      try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('API request failed');
+document.getElementById("fetchCaloriesBtn").addEventListener("click", async function () {
+    const food = document.getElementById("foodInput").value.trim();
+    const resultElement = document.getElementById("calorieResult");
+
+    if (!food) {
+        resultElement.textContent = "Please enter a food item.";
+        return;
+    }
+
+    try {
+        const response = await fetch(`https://api.api-ninjas.com/v1/nutrition?query=${encodeURIComponent(food)}`, {
+            method: "GET",
+            headers: {
+                "X-Api-Key": "XfPI/uFJt3L6ip6r6Oh+cg==KATeQUx4dfWIqhjC"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+        }
+
+        const data = await response.json();
         
+        if (data.length === 0) {
+            resultElement.textContent = "No data found for that food.";
+            return;
+        }
+
+        const calories = data[0].calories;
+        resultElement.textContent = `Calories in ${food}: ${calories}`;
+    } catch (error) {
+        console.error(error);
+        resultElement.textContent = "Failed to fetch calorie data.";
+    }
+});
+
+document.getElementById("fetchCaloriesBtn").addEventListener("click", async function (e) {
+    e.preventDefault(); // Prevent any unintended form behavior
+
+    const food = document.getElementById("food").value.trim(); // Correct input ID
+    const resultElement = document.getElementById("calorieResult");
+
+    if (!food) {
+        resultElement.textContent = "Please enter a food item.";
+        return;
+    }
+
+    try {
+        const response = await fetch(`https://api.api-ninjas.com/v1/nutrition?query=${encodeURIComponent(food)}`, {
+            method: "GET",
+            headers: {
+                "X-Api-Key": "XfPI/uFJt3L6ip6r6Oh+cg==KATeQUx4dfWIqhjC"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+        }
+
         const data = await response.json();
 
-        const calories = data.calories;
-        document.getElementById('calorieResult').innerText = `Calories: ${calories}`;
-      } catch (error) {
-        console.error('Error:', error);
-        document.getElementById('calorieResult').innerText = 'Failed to fetch calorie information.';
-      }
+        if (data.length === 0) {
+            resultElement.textContent = "No data found for that food.";
+            return;
+        }
+
+        const calories = data[0].calories;
+
+        resultElement.textContent = `Calories in ${food}: ${calories}`;
+
+        // Optional: auto-fill the calories input field
+        document.getElementById("calories").value = calories;
+    } catch (error) {
+        console.error(error);
+        resultElement.textContent = "Failed to fetch calorie data.";
     }
+});
+

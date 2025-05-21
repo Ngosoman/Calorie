@@ -98,15 +98,15 @@ form.addEventListener('submit', async (e) => {
 });
 async function fetchCalories(food, meal) {
  const API_KEY = 'XfPI/uFJt3L6ip6r6Oh+cg==KATeQUx4dfWIqhjC';
-//  const url = `https://api.calorieninjas.com/v1/nutrition?query=${encodeURIComponent(food)}`;
-  const url = `https://api.calorieninjas.com/v1/nutrition?query=chicken`;
+const url = `https://api.calorieninjas.com/v1/nutrition?query=${encodeURIComponent(food)}`;
+  // const url = `https://api.calorieninjas.com/v1/nutrition?query=chicken`;
   console.log(" Fetching:", url);
 
   try {
    const res = await fetch(url, {
        headers: {
        'X-Api-Key': API_KEY,
-       'Content-Type': 'application/json'
+       
 }
 });
 

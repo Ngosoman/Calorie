@@ -4,6 +4,8 @@ const calorieInput = document.getElementById('calories');
 const typeSelect = document.getElementById('type');
 const list = document.getElementById('calorie-list');
 const totalDisplay = document.getElementById('total');
+const mealSelect = document.getElementById("type");
+console.log(mealSelect);
 
 let items = getCookiesData() || [];
 
@@ -81,81 +83,49 @@ renderItems();
 
 
 
-document.getElementById("fetchCaloriesBtn").addEventListener("click", async function () {
-    const food = document.getElementById("foodInput").value.trim();
-    const resultElement = document.getElementById("calorieResult");
+// === Event Listeners ===//
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = foodInput.value.trim();
+  const meal = mealSelect.value;
+//   let calories = parseInt(calInput.value);
 
-    if (!food) {
-        resultElement.textContent = "Please enter a food item.";
-        return;
-    }
+  if (!name) return alert("Please enter a food name.");
 
-    try {
-        const response = await fetch(`https://api.api-ninjas.com/v1/nutrition?query=${encodeURIComponent(food)}`, {
-            method: "GET",
-            headers: {
-                "X-Api-Key": "XfPI/uFJt3L6ip6r6Oh+cg==KATeQUx4dfWIqhjC"
-            }
-        });
+  await fetchCalories(name,meal); // API fetch here
+  saveAndRender();
+  form.reset();
+});
+async function fetchCalories(food, meal) {
+ const API_KEY = 'XfPI/uFJt3L6ip6r6Oh+cg==KATeQUx4dfWIqhjC';
+//  const url = `https://api.calorieninjas.com/v1/nutrition?query=${encodeURIComponent(food)}`;
+  const url = `https://api.calorieninjas.com/v1/nutrition?query=chicken`;
+  console.log(" Fetching:", url);
 
-        if (!response.ok) {
-            throw new Error(`API error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        
-        if (data.length === 0) {
-            resultElement.textContent = "No data found for that food.";
-            return;
-        }
-
-        const calories = data[0].calories;
-        resultElement.textContent = `Calories in ${food}: ${calories}`;
-    } catch (error) {
-        console.error(error);
-        resultElement.textContent = "Failed to fetch calorie data.";
-    }
+  try {
+   const res = await fetch(url, {
+       headers: {
+       'X-Api-Key': API_KEY,
+       'Content-Type': 'application/json'
+}
 });
 
-document.getElementById("fetchCaloriesBtn").addEventListener("click", async function (e) {
-    e.preventDefault(); // Prevent any unintended form behavior
+    console.log(" Response Status:", res.status);
 
-    const food = document.getElementById("food").value.trim(); // Correct input ID
-    const resultElement = document.getElementById("calorieResult");
+   if (!res.ok) throw new Error('Network error');
 
-    if (!food) {
-        resultElement.textContent = "Please enter a food item.";
-        return;
-    }
+   const data = await res.json();
 
-    try {
-        const response = await fetch(`https://api.api-ninjas.com/v1/nutrition?query=${encodeURIComponent(food)}`, {
-            method: "GET",
-            headers: {
-                "X-Api-Key": "XfPI/uFJt3L6ip6r6Oh+cg==KATeQUx4dfWIqhjC"
-            }
-        });
+   console.log(" Data from API:", data.items);
+    let result = await loopDataArray(data.items);
+   console.log("Result:", result);
+    await loopResultsToGetObjects(result, meal);
 
-        if (!response.ok) {
-            throw new Error(`API error: ${response.status}`);
-        }
+   if (!data.items.length) throw new Error('Food not found');
 
-        const data = await response.json();
-
-        if (data.length === 0) {
-            resultElement.textContent = "No data found for that food.";
-            return;
-        }
-
-        const calories = data[0].calories;
-
-        resultElement.textContent = `Calories in ${food}: ${calories}`;
-
-        // Optional: auto-fill the calories input field
-        document.getElementById("calories").value = calories;
-    } catch (error) {
-        console.error(error);
-        resultElement.textContent = "Failed to fetch calorie data.";
-    }
-});
-
+ // return Math.round(data[0].calories);
+} catch (err) {
+   alert(`Could not fetch calories for "${food}" (${err.message}). Using default 100 kcal.`);
+    // return 100;
+}
+}
